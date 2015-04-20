@@ -14,6 +14,13 @@ function getDenominations(){
 
         var validWholeAmount = checkDecimalAmount(amount);
         //alert (validWholeAmount);
+		var isValidAmount = isValidEntry(amount);
+		
+		if (!isValidAmount){
+			document.getElementById("errorMessage").innerHTML = "<p>*Please enter valid amount.</p>";  
+		
+		}
+		//alert (isValidAmount);
         
         if (validWholeAmount) {
             
@@ -27,12 +34,21 @@ function getDenominations(){
 			_denominations ['5p'] = _denStrAndPence['5p'];
 			_denominations ['2p'] = _denStrAndPence['2p'];
 			_denominations ['1p'] = _denStrAndPence['1p'];
-
-
-           alert (_denominations ['2s']+"=="+_denominations ['1s']+"=="+_denominations ['50p']+"=="+_denominations ['20p']+"=="+_denominations ['10p']+"=="+_denominations ['5p']+"=="+_denominations ['2p']+"=="+_denominations ['1p'])
+			
+            document.getElementById("2s").innerHTML = _denominations ['2s'];
+			document.getElementById("1s").innerHTML = _denominations ['1s'];
+			document.getElementById("50p").innerHTML = _denominations ['50p'];
+			document.getElementById("20p").innerHTML = _denominations ['20p'];
+			document.getElementById("10p").innerHTML = _denominations ['10p'];
+			document.getElementById("5p").innerHTML = _denominations ['5p'];
+			document.getElementById("2p").innerHTML = _denominations ['2p'];
+			document.getElementById("1p").innerHTML = _denominations ['1p'];
+           //alert (_denominations ['2s']+"=="+_denominations ['1s']+"=="+_denominations ['50p']+"=="+_denominations ['20p']+"=="+_denominations ['10p']+"=="+_denominations ['5p']+"=="+_denominations ['2p']+"=="+_denominations ['1p'])
             
-			return _denominations;
+		   //return _denominations;
 		}
+		
+		
 
 // TO DO : calculate decimal only      				
 
@@ -40,9 +56,10 @@ function getDenominations(){
 
 }
 
-// function isValidEntry(amount) {
-//       TO DO: create regex		
-//}
+function isValidEntry(amount) {
+       var amountRegex = /^£?[1-9][0-9]*(\.[0-9]+)?p?$/;
+	   return amountRegex.test(amount);		
+}
 
 
 function checkDecimalAmount(amount){
@@ -126,14 +143,14 @@ function getSterlingAndPence(strP, valueToConvert) {
     var num = 0;
     var rem = 0;
 	var x = 0;
-    var _val = new Array();  // create array to hold the number of Sterling or pence and the remaining amount to calculate
+    var _val = new Array();  							// create array to hold the number of Sterling or pence and the remaining amount to calculate
 
-		rem = valueToConvert%strP;		// get the remaining amount to calculate
+		rem = valueToConvert%strP;						// get the remaining amount to calculate
 		x = (valueToConvert-rem);
 		if (x !=0) { num = (valueToConvert-rem)/strP; }
-		else {num = num;} // get the number or Sterling or pence
-		_val['num'] = num;    // store value
-		_val['rem'] = rem;    // store value
+		else {num = num;} 								// get the number or Sterling or pence
+		_val['num'] = num;    							// store value
+		_val['rem'] = rem;    							// store remainder value
 
     return _val;
 
@@ -214,4 +231,8 @@ function getPenceAboveAndEqual50(amount){
 
     return _denominations;				
 					
+}
+
+function resetData(){
+// TO DO:
 }
