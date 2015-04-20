@@ -1,16 +1,26 @@
 .main {
     width:40%;
-	height:25%;
+	height:15%;
 	background: gray;
-	border: 1px;
+	border: 2px solid black;
 	padding: 10px;
+	border-radius:15px;
 	
+}
+
+.err {
+    color: blue;
+	font-family: Verdana;
+	font-size:11px;
+
 }
 
 .entryArea {
 
 	font-family: Verdana;
 	font-size:12px;
+	color: white;
+
 }
 
 .hdHeader {
@@ -19,7 +29,7 @@
 	border: 2px solid white;
 	background : black;
 	color: white;
-
+	width:50px;
 }
 
 .hdData {
@@ -27,5 +37,11 @@
 	font-size:12px;
 	border: 2px solid white;
 	background : white;
+	height:20px;
+
+}
+
+.inputField {
+   width:155px;
 
 }
