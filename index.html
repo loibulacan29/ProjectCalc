@@ -5,15 +5,21 @@
 </head>
 <body>
 <div class="main">
-<div>
-<p class="entryArea"> Please enter amount: 
-<input type="text" id="amount" class="inputField">
-<input type="button" id="calculate" value="Get Denominations" onClick='getDenominations();' class="enterButton">
-</p>
+<div id="errorMessage" class="err">
 </div>
 <div>
 <table>
 <tr>
+<td><p class="entryArea">Enter amount:</p></td>
+<td><input type="text" id="amount" class="inputField"></td>
+<td><input type="button" id="calculate" value="Get Denominations" onClick='getDenominations();' class="Button"></td>
+<td><input type="button" id="clear" value="Clear Data" onClick='resetData();' class="Button"></td>
+</tr>
+</table>
+</div>
+<div>
+<table>
+<tr class = "data">
 <td class="hdHeader">2S</td>
 <td class="hdHeader">1S</td>
 <td class="hdHeader">50p</td>
@@ -24,14 +30,14 @@
 <td class="hdHeader">1p</td>
 </tr>
 <tr class = "data">
-<td class="hdData"></td>
-<td class="hdData"></td>
-<td class="hdData"></td>
-<td class="hdData"></td>
-<td class="hdData"></td>
-<td class="hdData"></td>
-<td class="hdData"></td>
-<td class="hdData"></td>
+<td class="hdData" id="2s"></td>
+<td class="hdData" id="1s"></td>
+<td class="hdData" id="50p"></td>
+<td class="hdData" id="20p"></td>
+<td class="hdData" id="10p"></td>
+<td class="hdData" id="5p"></td>
+<td class="hdData" id="2p"></td>
+<td class="hdData" id="1p"></td>
 </tr>
 </table>
 </div>
