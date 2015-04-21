@@ -64,6 +64,7 @@ function getStr(amount){
 	var _denominations = new Array ();
 	var amount=amount;
 	var _str = amount.replace(/[^\d.]/g, '');
+	_str = parseFloat(_str).toFixed(2);
 	//alert(_str);
 		
 	var checkDec = (_str.split(".").length == 2);
