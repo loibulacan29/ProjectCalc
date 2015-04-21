@@ -8,229 +8,152 @@ function getDenominations(){
         var _10p = 0;
         var _5p = 0;
         var _2p = 0;
-        var _1p = 0;
-        
-// calculate whole amount only
+        var _1p = 0;      
+	var isValidAmount = isValidEntry(amount);
+	var amountStr = "";
 
-        var validWholeAmount = checkDecimalAmount(amount);
-        //alert (validWholeAmount);
-		var isValidAmount = isValidEntry(amount);
 		
 		if (!isValidAmount){
 			document.getElementById("errorMessage").innerHTML = "<p>*Please enter valid amount.</p>";  
 		
-		}
-		//alert (isValidAmount);
-        
-        if (validWholeAmount) {
-            
-            var _denStrAndPence = calculateWholeAmount(amount);
+		} else {
 
-            	_denominations ['2s'] = _denStrAndPence['2s'];
-            	_denominations ['1s'] = _denStrAndPence['1s'];
-            	_denominations ['50p'] = _denStrAndPence['50p'];
-		_denominations ['20p'] = _denStrAndPence['20p'];
-		_denominations ['10p'] = _denStrAndPence['10p'];
-		_denominations ['5p'] = _denStrAndPence['5p'];
-		_denominations ['2p'] = _denStrAndPence['2p'];
-		_denominations ['1p'] = _denStrAndPence['1p'];
+			amountStr = amount.replace(/\D/g,'');
+			var _denStr = getStr(amount);
+			//alert (_denStr['2s']);
+			_denominations ['2s'] = _denStr['2s'];
+			_denominations ['1s'] = _denStr['1s'];
+			_denominations ['50p'] = _denStr['50p'];
+			_denominations ['20p'] = _denStr['20p'];
+			_denominations ['10p'] = _denStr['10p'];
+			_denominations ['5p'] = _denStr['5p'];
+			_denominations ['2p'] = _denStr['2p'];
+			_denominations ['1p'] = _denStr['1p'];
 			
-            	document.getElementById("2s").innerHTML = _denominations ['2s'];
-		document.getElementById("1s").innerHTML = _denominations ['1s'];
-		document.getElementById("50p").innerHTML = _denominations ['50p'];
-		document.getElementById("20p").innerHTML = _denominations ['20p'];
-		document.getElementById("10p").innerHTML = _denominations ['10p'];
-		document.getElementById("5p").innerHTML = _denominations ['5p'];
-		document.getElementById("2p").innerHTML = _denominations ['2p'];
-		document.getElementById("1p").innerHTML = _denominations ['1p'];
-          	
-          	//alert (_denominations ['2s']+"=="+_denominations ['1s']+"=="+_denominations ['50p']+"=="+_denominations ['20p']+"=="+_denominations ['10p']+"=="+_denominations ['5p']+"=="+_denominations ['2p']+"=="+_denominations ['1p'])
-               	//return _denominations;
+			document.getElementById("2s").innerHTML = _denominations ['2s'];
+			document.getElementById("1s").innerHTML = _denominations ['1s'];
+			document.getElementById("50p").innerHTML = _denominations ['50p'];
+			document.getElementById("20p").innerHTML = _denominations ['20p'];
+			document.getElementById("10p").innerHTML = _denominations ['10p'];
+			document.getElementById("5p").innerHTML = _denominations ['5p'];
+			document.getElementById("2p").innerHTML = _denominations ['2p'];
+			document.getElementById("1p").innerHTML = _denominations ['1p'];
+
 		}
-		
-		
-
-// TO DO : calculate decimal only      				
-
-// TO DO : calculate whole number and decimal
-
+			
 }
 
 function isValidEntry(amount) {
-       var amountRegex = /^£?[1-9][0-9]*(\.[0-9]+)?p?$/;
-	   return amountRegex.test(amount);		
+        var amountRegex = /^£?[1-9]?[0-9]*(\.[0-9]+)?p?$/;
+	return amountRegex.test(amount);		
 }
 
-
-function checkDecimalAmount(amount){
-       var amountToCalc = amount;
-       var validAmount = "";
-       
-		if (amountToCalc.split(".").length == 1 && amountToCalc !=0 ){  // simple check if valid entry, will be replaced by regex
-			validAmount = true;
-		} else {
-			validAmount = false;
-		}
-
-       return validAmount;
-}
-
-function checkIfDecimalAmount(amount){
-       var amountToCalc = amount;
-       var validAmount = "";
-       
-		if (amountToCalc.split(".").length == 2 && amountToCalc !=0 && amountToCalc < 1){  // simple check if valid entry, will be replaced by regex
-			validAmount = true;
-		} else {
-			validAmount = false;
-		}
-
-       return validAmount;
-}
-
-
-function calculateWholeAmount(amount){
-	var amount = amount;
-        var _denominations = new Array ();
-
-        if (amount >= 2) {
-            	var _2sValue = getSterlingAndPence(2,amount);
-
-                _2s = _2sValue['num'];
-               	_denominations ['2s'] = _2s; 
-
-                        if (_2sValue['rem'] == 0) {_denominations ['1s'] = 0;} 
-
-			else { 
-				var _1sValue = getSterlingAndPence(1,_2sValue['rem']); 
-				_1s = _1sValue['num']; 
-				_denominations ['1s'] = _1s; 
-				
-				//alert (_denominations ['1s']);
-				}
-          
-
-		} else { _denominations ['2s'] = 0; }
-        
-
-	_denominations ['50p'] = 0 ;
-	_denominations ['20p'] = 0;
-	_denominations ['10p'] = 0;
-	_denominations ['5p'] = 0;
-	_denominations ['2p'] = 0;
-	_denominations ['1p'] = 0;
-
-    	return _denominations;
-}
-
-function calculateDecimalAmount(amount){
+function getStr(amount){
+        var count2s = 0;
+	var count1s = 0;
+	var count50 = 0;
+	var count20 = 0;
+	var count10 = 0;
+	var count5 = 0;
+	var count2 = 0;
+	var count1 = 0;
+	var amountStr = 0;
+	var amountPence = 0;
+	var str = new Array();
+	var pn = new Array();
 	var _denominations = new Array ();
-	//var amount = amount.ToFixed(2); 
-	amount = amount*100;
+	var amount=amount;
+	var _str = amount.replace(/[^\d.]/g, '');
+	//alert(_str);
+		
+	var checkDec = (_str.split(".").length == 2);
+	//alert (checkDec);
+		
+	if (checkDec){ 
+		amountStr = _str.substring(0,_str.indexOf("."));
+		amountPence = _str.substring(_str.indexOf(".")+1,_str.length);
+		alert(amountPence);
+		alert(amountStr);
+	} else { 
+		amountStr = _str;
+		amountPence = 0;		
+	}
+		
+	str = [2,1];
+	pn=[50,20,10,5,2,1];
+		
+	// calculate for sterling
+ 
+        if (amountStr == 0 || amountStr =="") {
+		_denominations ['2s'] = 0;
+		_denominations ['1s'] = 0;
+	} else {
+		var totalStr=0,count=0;
+		
+		for(i=0;i<2;i++) {
+			count=amountStr/str[i]; 
+			
+				if(count!=0) {
+				    	//alert(i);
+					if (i==0) { count2s = parseInt(count); }
+					if (i==1) { count1s = parseInt(count); }
+				}
+				
+			totalStr=totalStr+count; 
+			amountStr=amountStr%str[i];
+            		amountStr = amountStr;			
+			
+		}
+			
+		_denominations ['2s'] = count2s;
+		_denominations ['1s'] = count1s;
+	}
+		
+	// calculate pence
+	if (amountPence == 0 || amountPence ==""){
+		_denominations ['50p'] = 0 ;
+		_denominations ['20p'] = 0;
+		_denominations ['10p'] = 0;
+		_denominations ['5p'] = 0;
+		_denominations ['2p'] = 0;
+		_denominations ['1p'] = 0;
+			
+	} else {
+		var totalStr=0,count=0;
+			
+		for(i=0;i<6;i++) {
+		    	amountPence = amountPence;
+			count=amountPence/pn[i]; 
+			
+			if(count!=0) {
 
-        if (amount >= 50 ) {
-		_denominations = getPenceAboveAndEqual50(amount);
-    	}
-            
+				if (i==0) { count50 = parseInt(count); }
+				if (i==1) { count20 = parseInt(count); }
+				if (i==2) { count10 = parseInt(count); }
+				if (i==3) { count5 = parseInt(count); }
+				if (i==4) { count2 = parseInt(count); }
+				if (i==5) { count1 = parseInt(count); }
+
+			}
+				
+			totalStr=totalStr+count; 
+			amountPence=amountPence%pn[i];
+            		amountPence = amountPence;			
+			
+		}
+		_denominations ['50p'] = count50 ;
+		_denominations ['20p'] = count20;
+		_denominations ['10p'] = count10;
+		_denominations ['5p'] = count5;
+		_denominations ['2p'] = count2;
+		_denominations ['1p'] = count1;	
+		
+	}
+		
+		
 	return _denominations;
 }
 
-
-function getSterlingAndPence(strP, valueToConvert) {
-    	var strP = strP;
-    	var valueToConvert = valueToConvert;
-    	var num = 0;
-    	var rem = 0;
-	var x = 0;
-    	var _val = new Array();  					// create array to hold the number of Sterling or pence and the remaining amount to calculate
-
-		rem = valueToConvert%strP;				// get the remaining amount to calculate
-		x = (valueToConvert-rem);
-		
-		if (x !=0) { num = (valueToConvert-rem)/strP; }
-		else {num = num;} 					// get the number or Sterling or pence
-		_val['num'] = num;    					// store value
-		_val['rem'] = rem;    					// store remainder value
-
-    	return _val;
-
-}
-
-// IN PROGRESS : will be replaced by while statement
-function getPenceAboveAndEqual50(amount){
-	var _50pValue = getSterlingAndPence(50,amount);
-	var _denominations = new Array ();
-
-                _50p = _50pValue['num'];
-               	_denominations ['50p'] = _50p; 
-
-                    	if (_50pValue['rem'] == 0) {
-						_denominations ['20p'] = 0;
-						_denominations ['10p'] = 0;
-						_denominations ['5p'] = 0;
-						_denominations ['2p'] = 0;
-						_denominations ['1p'] = 0;
-						
-			} else { 
-				if (_50pValue['rem'] >=20 && _50pValue['num'] < 50){
-						
-					var _20pValue = getSterlingAndPence(20,amount);   // get 20p
-					_20p = _20pValue['num']; 
-					_denominations ['20p'] = _20p; 
-							
-					// TO DO - other checks
-							
-				} else if (_50pValue['rem'] >=10 && _50pValue['num'] < 20){
-					var _10pValue = getSterlingAndPence(10,amount);   // get 10p
-					_10p = _10pValue['num'];
-							
-					_denominations ['20p'] = 0; 
-					_denominations ['10p'] = _10p; 
-							
-					// TO DO - other checks
-							
-				} else if (_50pValue['rem'] >=5 && _50pValue['num'] < 10){
-					var _5pValue = getSterlingAndPence(5,amount);   // get 5p
-					_5p = _5pValue['num']; 
-							
-					_denominations ['20p'] = 0; 
-					_denominations ['10p'] = 0;
-					_denominations ['5p'] = _5p;
-
-               				// TO DO - other checks	
-							
-				} else if (_50pValue['rem'] >=2 && _50pValue['num'] < 5 ){
-					var _2pValue = getSterlingAndPence(2,amount);   // get 2p
-					_2p = _2pValue['num']; 
-							
-					_denominations ['20p'] = 0; 
-					_denominations ['10p'] = 0;
-					_denominations ['5p'] = 0;
-					_denominations ['2p'] = _2p;
-							
-					// TO DO - other checks
-							
-				} else if (_50pValue['rem'] >=1 && _50pValue['num'] < 2 ){
-					var _1pValue = getSterlingAndPence(1,amount);   // get 1p
-					_1p = _1pValue['num']; 
-							
-					_denominations ['20p'] = 0; 
-					_denominations ['10p'] = 0;
-					_denominations ['5p'] = 0;
-					_denominations ['2p'] = 0;
-					_denominations ['2p'] = _1p;
-						
-					// TO DO - other checks
-						
-				}
-			}
-
-	_denominations ['2s'] = 0 ;
-	_denominations ['1s'] = 0 ;
-
-    	return _denominations;				
-					
-}
 
 function resetData(){
 // TO DO:
