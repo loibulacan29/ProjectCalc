@@ -73,8 +73,8 @@ function getStr(amount){
 	if (checkDec){ 
 		amountStr = _str.substring(0,_str.indexOf("."));
 		amountPence = _str.substring(_str.indexOf(".")+1,_str.length);
-		alert(amountPence);
-		alert(amountStr);
+		//alert(amountPence);
+		//alert(amountStr);
 	} else { 
 		amountStr = _str;
 		amountPence = 0;		
